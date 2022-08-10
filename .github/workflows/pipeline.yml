@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - hello-api/**
+      - ./**
 jobs:
   build:
     name: Build App
