@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - /
+      - ./
 jobs:
   build:
     name: Build App
