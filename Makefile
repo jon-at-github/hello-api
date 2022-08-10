@@ -17,3 +17,6 @@ upgrade-go:
 	wget "https://go.dev/dl/${GO_ZIP_ARM64_LATEST}"
 	sudo  tar -C /usr/local -xzf ${GO_ZIP_ARM64_LATEST}
 	rm ${GO_ZIP_ARM64_LATEST}
+
+build:
+	go build -o api cmd/main.go
