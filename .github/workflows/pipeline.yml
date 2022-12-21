@@ -103,7 +103,7 @@ jobs:
           fetch-depth: 0
       - name: Deploy function
         id: deploy
-        uses: google-github-actions/deploy-cloud-functions@master
+        uses: google-github-actions/deploy-cloud-functions@main
         with:
           name: translate
           entry_point: Translate
