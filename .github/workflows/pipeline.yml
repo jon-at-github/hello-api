@@ -95,7 +95,7 @@ jobs:
     name: Deploy FaaS
     runs-on: ubuntu-latest
     needs: test
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
@@ -103,7 +103,7 @@ jobs:
           fetch-depth: 0
       - name: Deploy function
         id: deploy
-        uses: google-github-actions/deploy-cloud-functions@main
+        uses: google-github-actions/deploy-cloud-functions@master
         with:
           name: translate
           entry_point: Translate
