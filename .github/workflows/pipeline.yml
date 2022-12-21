@@ -98,9 +98,14 @@ jobs:
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
     steps:
       - name: Check out code into the Go module directory
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
+      - name: Auth validations
+        id: auth
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
       - name: Deploy function
         id: deploy
         uses: google-github-actions/deploy-cloud-functions@main
@@ -108,6 +113,5 @@ jobs:
           name: translate
           entry_point: Translate
           runtime: go113
-          credentials: ${{ secrets.GCP_CREDENTIALS }}
       - id: test
         run: curl "${{ steps.deploy.outputs.url }}/hello"
