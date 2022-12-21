@@ -1,9 +1,10 @@
 package main
 
 import (
-	"encoding/json"
 	"log"
 	"net/http"
+
+	"github.com/jon-at-github/hello-api/handlers/rest"
 )
 
 func main() {
@@ -11,26 +12,7 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc(
-		"/hello",
-		func(w http.ResponseWriter, r *http.Request) {
-			enc := json.NewEncoder(w)
-
-			w.Header().
-				Set(
-					"Content-Type",
-					"application/json; charset=utf-8",
-				)
-
-			resp := Resp{
-				Language:    "English",
-				Translation: "Hello",
-			}
-			if err := enc.Encode(resp); err != nil {
-				panic("unacle to encode response")
-			}
-		},
-	)
+	mux.HandleFunc("/hello", rest.TranslateHandler)
 
 	log.Printf("listeting on %s\n", addr)
 
