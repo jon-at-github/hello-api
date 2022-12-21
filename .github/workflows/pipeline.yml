@@ -97,17 +97,17 @@ jobs:
     needs: test
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     steps:
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - name: Deploy function
-      id: deploy
-      uses: google-github-actions/deploy-cloud-functions@main
-      with:
-        name: translate
-        entry_point: Translate
-        runtime: go113
-        credentials: ${{ secrets.gcp_dredentials }}
-    - id: test
-      run: curl "${{ steps.deploy.outputs.url }}/hello"
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Deploy function
+        id: deploy
+        uses: google-github-actions/deploy-cloud-functions@main
+        with:
+          name: translate
+          entry_point: Translate
+          runtime: go113
+          credentials: ${{ secrets.gcp_dredentials }}
+      - id: test
+        run: curl "${{ steps.deploy.outputs.url }}/hello"
