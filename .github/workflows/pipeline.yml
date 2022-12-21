@@ -28,7 +28,7 @@ jobs:
         mkdir reports
         cp cover.html reports/.
     
-    -name: Archive
+    - name: Archive
       uses: actions/upload-artifact@v2
       with: 
         name: reports
