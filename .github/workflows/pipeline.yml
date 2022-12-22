@@ -112,6 +112,6 @@ jobs:
         with:
           name: translate
           entry_point: Translate
-          runtime: go113
+          runtime: go119
       - id: test
         run: curl "${{ steps.deploy.outputs.url }}/hello"
