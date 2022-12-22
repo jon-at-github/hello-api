@@ -131,6 +131,6 @@ jobs:
         credentials_json: ${{ secrets.GCP_CREDENTIALS }}
     - name: Deploy App
       id: deploy
-      uses: google-github-actions/deploy-appengine@main
+      uses: google-github-actions/deploy-appengine@v1
     - id: test
       run: curl "${{ steps.deploy.outputs.url }}/translate/hello"
