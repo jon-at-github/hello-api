@@ -19,7 +19,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	mux.HandleFunc("/translate/hello", rest.TranslateHandler)
-	mux.HandleFunc("/health", handlers.HealthCheck)
+	mux.HandleFunc("/health", handlers.HealthCheck) // <1>
 
 	log.Printf("listeting on %s\n", addr)
 

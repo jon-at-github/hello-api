@@ -1,7 +1,9 @@
+// Package translation houses logic to take a given word and find it in a different language
 package translation
 
 import "strings"
 
+// Translate will take a given word and language and find a translation for it.
 func Translate(word, language string) string {
 	word = sanitizeInput(word)
 	language = sanitizeInput(language)
