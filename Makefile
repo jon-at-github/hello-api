@@ -1,7 +1,7 @@
 GO_VERSION := 1.19
 GO_ZIP_ARM64_LATEST := go$(GO_VERSION).linux-arm64.tar.gz
 
-setup: install-go init-go
+setup: install-go init-go install-lint
 
 install-go:
 	wget "https://go.dev/dl/${GO_ZIP_ARM64_LATEST}"
@@ -33,3 +33,8 @@ report:
 
 check-format:
 	test -z $$(go fmt ./...)
+
+install-lint:
+        sudo curl -sSfL \
+ https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh\
+ | sh -s -- -b $$(go env GOPATH)/bin v1.41.1
