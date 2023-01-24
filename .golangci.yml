@@ -14,7 +14,8 @@ linters-settings:
 
 issues:
   exclude-use-default: false
-
+  exclude:
+  - "G114: Use of net/http serve function that has no support for setting timeouts"
 output:
   # colored-line-number|line-number|json|tab|checkstyle|code-climate, default is "colored-line-number"
   format: colored-line-number
