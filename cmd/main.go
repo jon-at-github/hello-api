@@ -8,6 +8,7 @@ import (
 
 	"github.com/jon-at-github/hello-api/handlers"
 	"github.com/jon-at-github/hello-api/handlers/rest"
+	"github.com/jon-at-github/hello-api/translation"
 )
 
 func main() {
@@ -18,8 +19,10 @@ func main() {
 
 	mux := http.NewServeMux()
 
-	mux.HandleFunc("/translate/hello", rest.TranslateHandler)
-	mux.HandleFunc("/health", handlers.HealthCheck) // <1>
+	translationService := translation.NewStaticService()
+	translateHandler := rest.NewTranslateHandler(translationService)
+	mux.HandleFunc("/translate/hello", translateHandler.TranslateHandler)
+	mux.HandleFunc("/health", handlers.HealthCheck)
 
 	log.Printf("listeting on %s\n", addr)
 
