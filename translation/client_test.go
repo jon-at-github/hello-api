@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -37,7 +38,12 @@ func (suite *HelloClientSuite) SetupSuite() {
 	suite.mockServerService = new(MockService)
 	handler := func(w http.ResponseWriter, r *http.Request) {
 		b, _ := io.ReadAll(r.Body)
-		defer r.Body.Close()
+		defer func() {
+			err := r.Body.Close()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}()
 
 		var m map[string]interface{}
 		_ = json.Unmarshal(b, &m)

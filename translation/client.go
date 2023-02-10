@@ -16,7 +16,7 @@ type APIClient struct {
 	endpoint string
 }
 
-// NewHelloClient creates instance of client with a given endpoint
+// NewHelloClient creates instance of client with a given endpoint.
 func NewHelloClient(endpoint string) *APIClient {
 	return &APIClient{
 		endpoint: endpoint,
@@ -48,7 +48,12 @@ func (c *APIClient) Translate(word, language string) (string, error) {
 	}
 
 	b, _ = io.ReadAll(response.Body)
-	defer response.Body.Close()
+	defer func() {
+		err := response.Body.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	var m map[string]interface{}
 	if err := json.Unmarshal(b, &m); err != nil {
