@@ -186,11 +186,11 @@ jobs:
       - name: Push Docker image to GCP
         run: docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/hello-api:latest
       - name: Log in to the GHCR
-        uses: docker/login-action@master
+        uses: docker/login-action@v2
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASS }}
       - name: Tag for Github
         run: docker image tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/hello-api:latest ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
       - name: Push Docker image to GHCR
