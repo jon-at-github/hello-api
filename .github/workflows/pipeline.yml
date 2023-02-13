@@ -198,3 +198,18 @@ jobs:
         run: docker image tag gcr.io/${{ secrets.GCP_PROJECT_ID }}/hello-api:latest ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
       - name: Push Docker image to GHCR
         run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+  deploy-container:
+    name: Deploy Container buildpack
+    runs-on: ubuntu-latest
+    needs: containerize-buildpack
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
+    steps:
+      - name: Deploy to CaaS
+        id: deploy
+        uses: google-github-actions/deploy-cloudrun@main
+        with:
+          service: translate
+          image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/hello-api:latest
+          credentials: ${{ secrets.gcp_credentials }}
+      - id: test
+        run: curl "${{ steps.deploy.outputs.url }}/hello"
