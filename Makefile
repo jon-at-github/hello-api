@@ -25,7 +25,7 @@ upgrade-go:
 	rm ${GO_BINARY_LATEST}
 
 build:
-	go build -ldflags "$(LDFLAGS)" -o api main.go
+	go build -ldflags "$(LDFLAGS)" -o api cmd/main.go
 
 test:
 	go test ./... -coverprofile=coverage.out
