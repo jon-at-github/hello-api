@@ -123,7 +123,7 @@ jobs:
         with:
           name: translate
           entry_point: Translate
-          runtime: go119
+          runtime: go120
       - id: test
         run: curl "${{ steps.deploy.outputs.url }}/hello"
   deploy-paas:
@@ -179,7 +179,7 @@ jobs:
       - name: Build
         run: pack build gcr.io/${{ secrets.GCP_PROJECT_ID }}/hello-api:latest --builder gcr.io/buildpacks/builder:v1
       - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@v0
+        uses: google-github-actions/setup-gcloud@v3
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           service_account_key: ${{ secrets.gcp_credentials }}
@@ -204,13 +204,17 @@ jobs:
     needs: containerize-buildpack
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
     steps:
+      - name: Auth validations
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
       - name: Deploy to CaaS
         id: deploy
-        uses: google-github-actions/deploy-cloudrun@main
+        uses: google-github-actions/deploy-cloudrun@v3
         with:
           service: translate
           image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/hello-api:latest
-          credentials: ${{ secrets.gcp_credentials }}
       - id: test
         run: curl "${{ steps.deploy.outputs.url }}/hello"
   containerize:
