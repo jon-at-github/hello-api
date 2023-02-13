@@ -1,3 +1,4 @@
+// Package config houses configurations for application.
 package config
 
 import (
@@ -7,9 +8,11 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strconv"
 )
 
+// Configuration will allow the application to run with different settings.
 type Configuration struct {
 	Port            string `json:"port"`
 	DefaultLanguage string `json:"default_language"`
@@ -47,7 +50,7 @@ func (c *Configuration) ParsePort() {
 // LoadFromJSON will read a JSON file and update configuration based on the file.
 func (c *Configuration) LoadFromJSON(path string) error {
 	log.Printf("loading configuration from file: %s\n", path)
-	b, err := os.ReadFile(path)
+	b, err := os.ReadFile(filepath.Clean(path))
 	if err != nil {
 		log.Printf("unable to load file: %s\n", err.Error())
 		return errors.New("unable to load configuration")
