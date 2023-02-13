@@ -123,7 +123,7 @@ jobs:
         with:
           name: translate
           entry_point: Translate
-          runtime: go119
+          runtime: go120
       - id: test
         run: curl "${{ steps.deploy.outputs.url }}/hello"
   deploy-paas:
@@ -182,7 +182,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v0
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
-          service_account_key: ${{ secrets.gcp_credentials }}
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
           export_default_credentials: true
       - name: Configure Docker
         run: gcloud auth configure-docker --quiet
@@ -204,13 +204,17 @@ jobs:
     needs: containerize-buildpack
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/master' }}
     steps:
+      - name: Auth validations
+        id: auth
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
       - name: Deploy to CaaS
         id: deploy
-        uses: google-github-actions/deploy-cloudrun@main
+        uses: google-github-actions/deploy-cloudrun@v3
         with:
           service: translate
           image: gcr.io/${{ secrets.GCP_PROJECT_ID }}/hello-api:latest
-          credentials: ${{ secrets.gcp_credentials }}
       - id: test
         run: curl "${{ steps.deploy.outputs.url }}/hello"
   containerize:
