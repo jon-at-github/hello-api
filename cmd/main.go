@@ -1,25 +1,29 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
-	"os"
 
+	"github.com/jon-at-github/hello-api/config"
 	"github.com/jon-at-github/hello-api/handlers"
 	"github.com/jon-at-github/hello-api/handlers/rest"
 	"github.com/jon-at-github/hello-api/translation"
 )
 
 func main() {
-	addr := fmt.Sprintf(":%s", os.Getenv("PORT"))
-	if addr == ":" {
-		addr = ":8080"
-	}
+	cfg := config.LoadConfiguration()
+	addr := cfg.Port
 
 	mux := http.NewServeMux()
 
-	translationService := translation.NewStaticService()
+	var translationService rest.Translator
+	translationService = translation.NewStaticService()
+	if cfg.LegacyEndpoint != "" {
+		log.Printf("creating external translation client: %s", cfg.LegacyEndpoint)
+		client := translation.NewHelloClient(cfg.LegacyEndpoint)
+		translationService = translation.NewRemoteService(client)
+	}
+
 	translateHandler := rest.NewTranslateHandler(translationService)
 	mux.HandleFunc("/hello", translateHandler.TranslateHandler)
 	mux.HandleFunc("/health", handlers.HealthCheck)
