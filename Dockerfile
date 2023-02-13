@@ -1,7 +1,7 @@
 FROM golang:1.20 AS deps
 
 WORKDIR /hello-api
-ASS *.mod *.sum ./
+AS *.mod *.sum ./
 RUN go mod download
 
 FROM deps as dev
