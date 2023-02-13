@@ -1,13 +1,18 @@
 GO_VERSION := 1.20
-GO_ZIP_ARM64_LATEST := go$(GO_VERSION).linux-arm64.tar.gz
+ARCH := arm64
+GO_BINARY_LATEST := go$(GO_VERSION).linux-$(ARCH).tar.gz
+TAG := $(shell git describe --abbrev=0 --tags --always)
+HASH := $(shell git rev-parse HEAD)
+DATE := $(shell date +%Y-%m-%d.%H:%M:%S)
+LDFLAGS := -w -X github.com/jon-at-github/hello-api/handlers.hash=$(HASH) -X github.com/jon-at-github/hello-api/handlers.tag=$(TAG) -X github.com/jon-at-github/hello-api/handlers.date=$(DATE)
 
 setup: install-go init-go install-lint copy-hooks
 
 install-go:
 	sudo rm -rf /usr/local/go
-	wget "https://go.dev/dl/${GO_ZIP_ARM64_LATEST}"
-	sudo tar -C /usr/local -xvf ${GO_ZIP_ARM64_LATEST}
-	rm ${GO_ZIP_ARM64_LATEST}
+	wget "https://go.dev/dl/${GO_BINARY_LATEST}"
+	sudo tar -C /usr/local -xvf ${GO_BINARY_LATEST}
+	rm ${GO_BINARY_LATEST}
 
 init-go:
 	echo 'export PATH=$$PATH:/usr/local/go/bin' >> $${HOME}.bashrc
@@ -15,12 +20,12 @@ init-go:
 
 upgrade-go:
 	sudo rm -rf /usr/local/go
-	wget "https://go.dev/dl/${GO_ZIP_ARM64_LATEST}"
-	sudo  tar -C /usr/local -xzf ${GO_ZIP_ARM64_LATEST}
-	rm ${GO_ZIP_ARM64_LATEST}
+	wget "https://go.dev/dl/${GO_BINARY_LATEST}"
+	sudo  tar -C /usr/local -xzf ${GO_BINARY_LATEST}
+	rm ${GO_BINARY_LATEST}
 
 build:
-	go build -o api cmd/main.go
+	go build -ldflags "$(LDFLAGS)" -o api main.go
 
 test:
 	go test ./... -coverprofile=coverage.out
