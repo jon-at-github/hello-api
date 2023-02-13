@@ -27,6 +27,7 @@ func main() {
 	translateHandler := rest.NewTranslateHandler(translationService)
 	mux.HandleFunc("/hello", translateHandler.TranslateHandler)
 	mux.HandleFunc("/health", handlers.HealthCheck)
+	mux.HandleFunc("/info", handlers.Info)
 
 	log.Printf("listeting on %s\n", addr)
 
