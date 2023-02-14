@@ -6,7 +6,7 @@ HASH := $(shell git rev-parse HEAD)
 DATE := $(shell date +%Y-%m-%d.%H:%M:%S)
 LDFLAGS := -w -X github.com/jon-at-github/hello-api/handlers.hash=$(HASH) -X github.com/jon-at-github/hello-api/handlers.tag=$(TAG) -X github.com/jon-at-github/hello-api/handlers.date=$(DATE)
 
-setup: install-go init-go install-lint copy-hooks
+setup: install-go init-go install-lint install-godog
 
 install-go:
 	sudo rm -rf /usr/local/go
@@ -46,3 +46,5 @@ install-lint:
 copy-hooks:
 	chmod +x scripts/hooks/
 	cp -r scripts/hooks .git/.
+install-godog:
+	go install github.com/cucumber/godog/cmd/godog@latest
