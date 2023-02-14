@@ -18,7 +18,8 @@ type Configuration struct {
 	DefaultLanguage string `json:"default_language"`
 	LegacyEndpoint  string `json:"legacy_endpoint"`
 	DatabaseType    string `json:"database_type"`
-	DatbaseURL      string `json:"database_url"`
+	DatabaseURL     string `json:"database_url"`
+	DatabasePort    string `json:"database_port"`
 }
 
 var defaultConfiguration = Configuration{
