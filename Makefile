@@ -48,3 +48,8 @@ copy-hooks:
 	cp -r scripts/hooks .git/.
 install-godog:
 	go install github.com/cucumber/godog/cmd/godog@latest
+install-k8s-redis:
+	helm repo add bitnami https://charts.bitnami.com/bitnami
+	helm install redis-cluster bitnami/redis --set password=amnesia
+deploy:
+	kubectl apply -f k8s
