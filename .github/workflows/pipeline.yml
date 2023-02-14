@@ -181,7 +181,6 @@ jobs:
     needs:
       - smoke-test
       - regression-test
-    if: ${{ github.event_name == 'push' && contains(github.ref, 'refs/tags/') }}
     steps:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
