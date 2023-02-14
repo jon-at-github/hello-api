@@ -261,7 +261,7 @@ jobs:
       - name: Check out code into the Go module directory
         uses: actions/checkout@v2
       - name: Install Godog
-        run: Run Smoke Tests
+        run: go install github.com/cucumber/godog/cmd/godog@latest
       - name: Run Smoke Tests
         run: |
           go get ./...
