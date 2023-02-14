@@ -30,11 +30,7 @@ func NewDatabaseService(cfg config.Configuration) *Database {
 
 // Close closes the client, releasing any open resources.
 func (s *Database) Close() error {
-	err := s.conn.Close()
-	if err != nil {
-		return err
-	}
-	return nil
+	return s.conn.Close()
 }
 
 // Translate will take a given word and language and find a translation for it.

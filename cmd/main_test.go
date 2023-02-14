@@ -94,7 +94,7 @@ func InitializeTestSuite(sc *godog.TestSuiteContext) {
 	})
 
 	sc.AfterSuite(func() {
-		database.Close()
+		_ = database.Close()
 	})
 }
 
