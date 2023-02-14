@@ -50,6 +50,6 @@ install-godog:
 	go install github.com/cucumber/godog/cmd/godog@latest
 install-k8s-redis:
 	helm repo add bitnami https://charts.bitnami.com/bitnami
-	helm install redis-cluster bitnami/redis --set password=amnesia
+	helm install redis-cluster bitnami/redis --set password=$$(tr -dc A-Za-z0-9 </dev/urandom | head -c 13 ; echo '')
 deploy:
 	kubectl apply -f k8s
